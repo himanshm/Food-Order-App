@@ -1,6 +1,7 @@
 import Button from './UI/Button';
-import { Meal } from './Meals';
+import { Meal } from '../context/CartContext';
 import { currencyFormatter } from '../utils/formatter';
+import useCartContext from '../context/useCartContext';
 
 type MealItemProps = {
   meal: Meal;
@@ -8,6 +9,11 @@ type MealItemProps = {
 
 function MealItem({ meal }: MealItemProps) {
   const { name, price, description, image } = meal;
+  const { addItem } = useCartContext();
+
+  function handleAddMealToCart() {
+    addItem(meal);
+  }
   return (
     <li className='meal-item'>
       <article>
@@ -18,7 +24,7 @@ function MealItem({ meal }: MealItemProps) {
           <p className='meal-item-description'>{description}</p>
         </div>
         <p className='meal-item-actions'>
-          <Button>Add to Cart</Button>
+          <Button onClick={handleAddMealToCart}>Add to Cart</Button>
         </p>
       </article>
     </li>
