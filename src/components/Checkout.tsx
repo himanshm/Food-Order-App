@@ -1,3 +1,4 @@
+import { FormEvent } from 'react';
 import useCartContext from '../context/useCartContext';
 import useUserProgressContext from '../context/useUserProgressContext';
 import calculateCartTotal from '../utils/cartTotal';
@@ -16,13 +17,35 @@ function Checkout() {
     hideCheckout();
   }
 
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const formElement = e.target as HTMLFormElement;
+    const fd = new FormData(formElement);
+
+    const customerData = Object.fromEntries(fd.entries());
+
+    fetch('http://localhost:3000/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        order: {
+          items,
+          customer: customerData,
+        },
+      }),
+    });
+  }
+
   return (
     <Modal open={progress === 'checkout'} onClose={handleClose}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)} </p>
 
-        <Input label='Full Name' type='text' id='full-name' />
+        <Input label='Full Name' type='text' id='name' />
         <Input label='E-mail Address' type='email' id='email' />
         <Input label='Street Address' type='text' id='street' />
 
