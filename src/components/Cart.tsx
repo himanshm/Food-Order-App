@@ -4,26 +4,28 @@ import Modal from './UI/Modal.tsx';
 import Button from './UI/Button';
 import useUserProgressContext from '../context/useUserProgressContext.ts';
 import CartItem from './CartItem.tsx';
+import calculateCartTotal from '../utils/cartTotal.ts';
 
 function Cart() {
   const { items, addItem, removeItem } = useCartContext();
   const { progress, hideCart, showCheckout } = useUserProgressContext();
 
-  const cartTotal = items.reduce(
-    (totalPrice, item) => totalPrice + item.quantity * +item.price,
-    0
-  );
+  const cartTotal = calculateCartTotal(items);
 
   function handleCloseCart() {
     hideCart();
   }
 
-  function handleCheckout() {
+  function handleGoToCheckout() {
     showCheckout();
   }
 
   return (
-    <Modal className='cart' open={progress === 'cart'}>
+    <Modal
+      className='cart'
+      open={progress === 'cart'}
+      onClose={progress === 'cart' ? handleCloseCart : undefined}
+    >
       <h2>Your Cart</h2>
       <ul>
         {items.map((item) => {
@@ -42,7 +44,9 @@ function Cart() {
         <Button textOnly onClick={handleCloseCart}>
           Close
         </Button>
-        <Button onClick={handleCheckout}>Go to Checkout</Button>
+        {items.length > 0 ? (
+          <Button onClick={handleGoToCheckout}>Go to Checkout</Button>
+        ) : null}
       </p>
     </Modal>
   );

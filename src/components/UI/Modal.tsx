@@ -4,9 +4,10 @@ import { createPortal } from 'react-dom';
 type ModalProps = {
   children: ReactNode;
   open: boolean;
-  className: string;
+  className?: string;
+  onClose: (() => void) | undefined;
 };
-function Modal({ children, open, className = '' }: ModalProps) {
+function Modal({ children, open, onClose, className = '' }: ModalProps) {
   const dialog = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ function Modal({ children, open, className = '' }: ModalProps) {
     return;
   }
   return createPortal(
-    <dialog ref={dialog} className={`modal ${className}`}>
+    <dialog ref={dialog} className={`modal ${className}`} onClose={onClose}>
       {children}
     </dialog>,
     modalRoot
