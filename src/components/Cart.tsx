@@ -3,9 +3,10 @@ import { currencyFormatter } from '../utils/formatter';
 import Modal from './UI/Modal.tsx';
 import Button from './UI/Button';
 import useUserProgressContext from '../context/useUserProgressContext.ts';
+import CartItem from './CartItem.tsx';
 
 function Cart() {
-  const { items } = useCartContext();
+  const { items, addItem, removeItem } = useCartContext();
   const { progress, hideCart, showCheckout } = useUserProgressContext();
 
   const cartTotal = items.reduce(
@@ -20,16 +21,19 @@ function Cart() {
   function handleCheckout() {
     showCheckout();
   }
+
   return (
     <Modal className='cart' open={progress === 'cart'}>
       <h2>Your Cart</h2>
       <ul>
         {items.map((item) => {
-          const { id, name, quantity } = item;
           return (
-            <li key={id}>
-              {name}-{quantity}
-            </li>
+            <CartItem
+              key={item.id}
+              item={item}
+              onIncrease={addItem}
+              onDecrease={removeItem}
+            />
           );
         })}
       </ul>
