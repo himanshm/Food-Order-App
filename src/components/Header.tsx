@@ -1,13 +1,20 @@
 import Button from './UI/Button';
 import logoImg from '../assets/logo.jpg';
 import useCartContext from '../context/useCartContext';
+import useUserProgressContext from '../context/useUserProgressContext';
 
 function Header() {
   const { items } = useCartContext();
+  const { showCart } = useUserProgressContext();
 
   const totalCartItems = items.reduce((totalItems, item) => {
     return totalItems + item.quantity;
   }, 0);
+
+  function handleShowCart() {
+    showCart();
+  }
+
   return (
     <header id='main-header'>
       <div id='title'>
@@ -16,7 +23,9 @@ function Header() {
       </div>
 
       <nav>
-        <Button textOnly>Cart ({totalCartItems})</Button>
+        <Button textOnly onClick={handleShowCart}>
+          Cart ({totalCartItems})
+        </Button>
       </nav>
     </header>
   );
