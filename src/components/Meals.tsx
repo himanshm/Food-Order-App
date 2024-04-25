@@ -2,6 +2,7 @@ import MealItem from './MealItem.tsx';
 import useHttp from '../hooks/useHttp.ts';
 
 import { Meal } from '../context/CartContext.tsx';
+import Error from './Error.tsx';
 
 const requestConfig: RequestInit = {}; // if we send this empty object directly in side useHttp, it will create an infinite loop as config will change in each render of the component
 
@@ -16,7 +17,11 @@ function Meals() {
   });
 
   if (isLoading) {
-    return <p>Fetching Meals...</p>;
+    return <p className='center'>Fetching Meals...</p>;
+  }
+
+  if (error) {
+    return <Error title='Failed to fetch meals!' message={error.message} />;
   }
 
   return (
