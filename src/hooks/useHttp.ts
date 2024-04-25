@@ -30,27 +30,37 @@ function useHttp<T>({ url, config }: HttpRequestParams) {
   const [error, setError] = useState<ErrorInfo | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const sendRequest = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const resData: T = await sendHttpRequest<T>(url, config);
-      setData(resData);
-      setIsLoading(false);
-    } catch (error) {
-      setError({
-        message:
-          error instanceof Error ? error.message : 'Something went wrong!',
-      });
-      setIsLoading(false);
-    }
-  }, [url, config]);
+  function clearData() {
+    setData(null);
+  }
+
+  const sendRequest = useCallback(
+    async (requestData?: any) => {
+      setIsLoading(true);
+      try {
+        const resData: T = await sendHttpRequest<T>(url, {
+          ...config,
+          body: requestData ? JSON.stringify(requestData) : undefined,
+        });
+        setData(resData);
+        setIsLoading(false);
+      } catch (error) {
+        setError({
+          message:
+            error instanceof Error ? error.message : 'Something went wrong!',
+        });
+        setIsLoading(false);
+      }
+    },
+    [url, config]
+  );
 
   useEffect(() => {
     if ((config && config.method === 'GET') || !config.method || !config)
       sendRequest();
   }, [sendRequest, config]);
 
-  return { sendRequest, error, isLoading, data };
+  return { sendRequest, error, isLoading, data, clearData };
 }
 
 export default useHttp;

@@ -16,6 +16,7 @@ export type CartState = {
 export type CartContextType = CartState & {
   addItem: (item: Meal) => void;
   removeItem: (id: string) => void;
+  clearCart: () => void;
 };
 
 export const CartContext = createContext<CartContextType | null>(null);
@@ -38,7 +39,11 @@ type RemoveItemFromCartAction = {
   payload: string;
 };
 
-type CartAction = AddToCartAction | RemoveItemFromCartAction;
+type ClearCartAction = {
+  type: 'CLEAR_CART';
+};
+
+type CartAction = AddToCartAction | RemoveItemFromCartAction | ClearCartAction;
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
@@ -84,6 +89,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       }
       return { ...state, items: updatedItems };
     }
+
+    case 'CLEAR_CART': {
+      return { ...state, items: [] };
+    }
     default:
       return state;
   }
@@ -100,10 +109,15 @@ function CartContextProvider({ children }: CartContextProviderProps) {
     dispatchCartAction({ type: 'REMOVE_ITEM', payload: id });
   }
 
+  function clearCart() {
+    dispatchCartAction({ type: 'CLEAR_CART' });
+  }
+
   const cartContextValue: CartContextType = {
     items: cart.items,
     addItem,
     removeItem,
+    clearCart,
   };
 
   return (
