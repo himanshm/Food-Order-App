@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 interface HttpRequestParams {
   url: string;
-  config?: RequestInit;
+  config: RequestInit;
 }
 
 interface ErrorInfo {
@@ -25,8 +25,8 @@ async function sendHttpRequest<T>(
   return resData as T;
 }
 
-function useHttp<T>({ url, config = {} }: HttpRequestParams) {
-  const [data, setData] = useState<T | null>(null);
+function useHttp<T>({ url, config }: HttpRequestParams) {
+  const [data, setData] = useState<T | null>();
   const [error, setError] = useState<ErrorInfo | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -46,7 +46,8 @@ function useHttp<T>({ url, config = {} }: HttpRequestParams) {
   }, [url, config]);
 
   useEffect(() => {
-    if (config && config.method === 'GET') sendRequest();
+    if ((config && config.method === 'GET') || !config.method || !config)
+      sendRequest();
   }, [sendRequest, config]);
 
   return { sendRequest, error, isLoading, data };
