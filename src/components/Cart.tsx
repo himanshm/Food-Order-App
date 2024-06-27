@@ -1,8 +1,8 @@
-import useCartContext from '../context/useCartContext.ts';
+import useCartContext from '../hooks/useCartContext.ts';
 import { currencyFormatter } from '../utils/formatter';
 import Modal from './UI/Modal.tsx';
 import Button from './UI/Button';
-import useUserProgressContext from '../context/useUserProgressContext.ts';
+import useUserProgressContext from '../hooks/useUserProgressContext.ts';
 import CartItem from './CartItem.tsx';
 import calculateCartTotal from '../utils/cartTotal.ts';
 

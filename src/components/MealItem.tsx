@@ -1,7 +1,7 @@
 import Button from './UI/Button';
 import { Meal } from '../context/CartContext';
 import { currencyFormatter } from '../utils/formatter';
-import useCartContext from '../context/useCartContext';
+import useCartContext from '../hooks/useCartContext';
 
 type MealItemProps = {
   meal: Meal;

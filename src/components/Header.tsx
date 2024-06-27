@@ -1,7 +1,7 @@
 import Button from './UI/Button';
 import logoImg from '../assets/logo.jpg';
-import useCartContext from '../context/useCartContext';
-import useUserProgressContext from '../context/useUserProgressContext';
+import useCartContext from '../hooks/useCartContext';
+import useUserProgressContext from '../hooks/useUserProgressContext';
 
 function Header() {
   const { items } = useCartContext();

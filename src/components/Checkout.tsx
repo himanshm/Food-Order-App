@@ -1,6 +1,6 @@
 import { FormEvent, ReactNode } from 'react';
-import useCartContext from '../context/useCartContext';
-import useUserProgressContext from '../context/useUserProgressContext';
+import useCartContext from '../hooks/useCartContext';
+import useUserProgressContext from '../hooks/useUserProgressContext';
 import calculateCartTotal from '../utils/cartTotal';
 import { currencyFormatter } from '../utils/formatter';
 import Button from './UI/Button';

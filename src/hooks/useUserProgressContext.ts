@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { UserProgressContext } from './UserProgressContext';
+import { UserProgressContext } from '../context/UserProgressContext';
 
 function useUserProgressContext() {
   const userProgressContext = useContext(UserProgressContext);

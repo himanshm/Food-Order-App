@@ -35,7 +35,7 @@ function useHttp<T>({ url, config }: HttpRequestParams) {
   }
 
   const sendRequest = useCallback(
-    async (requestData?: any) => {
+    async (requestData?: unknown) => {
       setIsLoading(true);
       try {
         const resData: T = await sendHttpRequest<T>(url, {
